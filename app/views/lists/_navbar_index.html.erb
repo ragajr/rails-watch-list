@@ -1,0 +1,13 @@
+para dirigirme a la lista
+<div class="container-2">
+  <%= render "navbar_index", lists: @lists %>
+</div>
+
+
+
+para ver la lista <div>
+  <% lists.each do |list| %>
+    <%= render list %>
+    <%= list.id %>
+  <% end %>
+</div>

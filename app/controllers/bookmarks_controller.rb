@@ -1,10 +1,5 @@
 class BookmarksController < ApplicationController
-  before_action :set_bookmark, only: :destroy
-  before_action :set_list, only: [:new, :create]
-
-  def index
-    @bookmarks = Bookmark.all
-  end
+  before_action :set_bookmark, only: [:destroy]
 
   def new
     @bookmark = Bookmark.new
@@ -12,9 +7,9 @@ class BookmarksController < ApplicationController
 
   def create
     @bookmark = Bookmark.new(bookmark_params)
-    @bookmark.list = @list
+    @bookmark.list = List.find(params[:list_id])
     if @bookmark.save
-      redirect_to list_path(@list)
+      redirect_to list_path(@bookmark.list)
     else
       render :new
     end
@@ -22,7 +17,7 @@ class BookmarksController < ApplicationController
 
   def destroy
     @bookmark.destroy
-    redirect_to list_path(@bookmark.list)
+    redirect_to list_path(@bookmark.list), notice: 'Bookmark was successfully destroyed.'
   end
 
   private
@@ -33,9 +28,5 @@ class BookmarksController < ApplicationController
 
   def set_bookmark
     @bookmark = Bookmark.find(params[:id])
-  end
-
-  def set_list
-    @list = List.find(params[:list_id])
   end
 end
